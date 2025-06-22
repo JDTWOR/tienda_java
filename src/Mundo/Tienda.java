@@ -1,31 +1,44 @@
 package Mundo;
 
 public class Tienda {
-	private String nombre;
-	private String direccion;
-	  
-	private String contacto;
+  private int id;
+  private String nombre;
+  private String direccion;
 
-	  
-	public Tienda(String pnombre, String pdireccion, String pcontacto) {
-		nombre = pnombre;
-	    direccion = pdireccion;
-	    contacto = pcontacto;
-	}
+  private String contacto;
 
-	  
-	public String getNombre() {
-	    return this.nombre;
-	}
+  public Tienda(String pnombre, String pdireccion, String pcontacto) {
+    this.nombre = pnombre;
+    this.direccion = pdireccion;
+    this.contacto = pcontacto;
+  }
 
-	  
-	public String getDireccion() {
-	    return this.direccion;
-	}
+  public void setId(int pid) {
+    this.id = pid;
+  }
 
-	  
-	public String getContacto() {
-	    return this.contacto;
-	}
+  public String getNombre() {
+    return this.nombre;
+  }
+
+  public void setNombre(String pnombre) {
+    this.nombre = pnombre;
+  }
+
+  public String getDireccion() {
+    return this.direccion;
+  }
+
+  public void setDireccion(String pdireccion) {
+    this.direccion = pdireccion;
+  }
+
+  public String getContacto() {
+    return this.contacto;
+  }
+
+  public void setContacto(String pcontacto) {
+    this.contacto = pcontacto;
+  }
 
 }
