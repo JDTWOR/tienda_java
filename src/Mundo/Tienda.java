@@ -1,20 +1,36 @@
 package Mundo;
 
 public class Tienda {
-  private int id;
+  private long id;
   private String nombre;
-  private String direccion;
-
+  private long idCategoria;
   private String contacto;
+  private String direccion;
+  private String rutaImagen;
 
-  public Tienda(String pnombre, String pdireccion, String pcontacto) {
+  public Tienda(String pnombre, long pidCategoria, String pcontacto, String pdireccion, String prutaImagen) {
     this.nombre = pnombre;
-    this.direccion = pdireccion;
+    this.idCategoria = pidCategoria;
     this.contacto = pcontacto;
+    this.direccion = pdireccion;
+    this.rutaImagen = prutaImagen;
   }
 
-  public void setId(int pid) {
+  public Tienda(long pid, String pnombre, long pidCategoria, String pcontacto, String pdireccion, String prutaImagen) {
     this.id = pid;
+    this.nombre = pnombre;
+    this.idCategoria = pidCategoria;
+    this.contacto = pcontacto;
+    this.direccion = pdireccion;
+    this.rutaImagen = prutaImagen;
+  }
+
+  public void setId(long pid) {
+    this.id = pid;
+  }
+
+  public long getId() {
+    return this.id;
   }
 
   public String getNombre() {
@@ -41,4 +57,19 @@ public class Tienda {
     this.contacto = pcontacto;
   }
 
+  public long getIdCategoria() {
+    return idCategoria;
+  }
+
+  public void setIdCategoria(long pidCategoria) {
+    this.idCategoria = pidCategoria;
+  }
+
+  public String getRutaImagen() {
+    return rutaImagen;
+  }
+
+  public void setRutaImagen(String prutaImagen) {
+    this.rutaImagen = prutaImagen;
+  }
 }

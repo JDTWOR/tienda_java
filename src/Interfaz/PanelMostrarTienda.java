@@ -70,13 +70,8 @@ public class PanelMostrarTienda extends JPanel {
         JScrollPane scrollDesc = new JScrollPane(txtDescripcion);
         add(scrollDesc, gbc);
         
-        // Valores de ejemplo
-        txtNombre.setText("Tienda El Éxito");
-        txtCategoria.setText("Supermercado");
-        txtTelefono.setText("(601) 123-4567");
-        txtDireccion.setText("Calle 123 #45-67, Bogotá");
-        txtHorario.setText("Lun-Dom: 7:00 AM - 10:00 PM");
-        txtDescripcion.setText("Supermercado de cadena con amplia variedad de productos para el hogar.");
+        // Inicializar campos vacíos
+        limpiarInformacion();
     }
     
     public void actualizarInformacion(String nombre, String categoria, String telefono, 

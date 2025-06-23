@@ -1,7 +1,10 @@
 package Interfaz;
 
 import java.awt.BorderLayout;
+import java.util.List;
 import javax.swing.JFrame;
+import Conexion.TiendaDAO;
+import Mundo.Tienda;
 
 public class PanelPrincipal extends JFrame {
 	public static final String DB_URL = "jdbc:sqlite:tiendas.db";
@@ -12,11 +15,26 @@ public class PanelPrincipal extends JFrame {
 	public PanelOpciones panelOpciones;
 	public PanelListaTiendas panelListaTiendas;
 	
-	/* constructor */
-	public PanelPrincipal() {
-		//cargarTiendas();
-		
-		setLayout(new BorderLayout());
+    /* constructor */
+    public PanelPrincipal() {
+        setLayout(new BorderLayout());
+        
+        // Inicializar paneles primero
+        panelBanner = new PanelBanner();
+        mostrarTienda = new PanelMostrarTienda();
+        panelListaTiendas = new PanelListaTiendas();
+        panelImagen = new PanelImagen();
+        panelOpciones = new PanelOpciones();
+        
+        // Configurar listener para selección de tiendas
+        panelListaTiendas.getListaTiendas().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                mostrarTiendaSeleccionada();
+            }
+        });
+        
+        // Cargar tiendas iniciales
+        panelListaTiendas.cargarTiendas();
 		setSize(800, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Directorio de tiendas");
@@ -52,10 +70,31 @@ public class PanelPrincipal extends JFrame {
 	        // y se actualizaría el panel de lista de tiendas
 	    }
 
-	    private void mostrarTiendaSeleccionada() {
-	        // Aquí se mostraría la tienda seleccionada en el panel de mostrar tienda
-	        // y se actualizarían los detalles en el panel de imagen y opciones
-	    }
+    private void mostrarTiendaSeleccionada() {
+        String nombreTienda = panelListaTiendas.getListaTiendas().getSelectedValue();
+        if (nombreTienda != null) {
+            try {
+                TiendaDAO tiendaDAO = new TiendaDAO();
+                List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+                
+                for (Tienda tienda : tiendas) {
+                    if (tienda.getNombre().equals(nombreTienda)) {
+                        mostrarTienda.actualizarInformacion(
+                            tienda.getNombre(),
+                            String.valueOf(tienda.getIdCategoria()),
+                            tienda.getContacto(),
+                            tienda.getDireccion(),
+                            "", // Horario - agregar campo si es necesario
+                            ""  // Descripción - agregar campo si es necesario
+                        );
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error al cargar tienda: " + e.getMessage());
+            }
+        }
+    }
 
 	    private void actualizarListaTiendas() {
 	        // Aquí se actualizaría la lista de tiendas en el panel de lista de tiendas

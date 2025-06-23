@@ -3,12 +3,15 @@ package Interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import Conexion.TiendaDAO;
+import Mundo.Tienda;
 
 public class PanelListaTiendas extends JPanel {
     private JList<String> listaTiendas;
@@ -20,15 +23,12 @@ public class PanelListaTiendas extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Lista de tiendas"));
         setPreferredSize(new Dimension(220, 400));
         
-        // Crear lista con tiendas de ejemplo
+        // Crear lista vacía que se llenará desde la base de datos
         modeloLista = new DefaultListModel<>();
-        modeloLista.addElement("Tienda El Éxito");
-        modeloLista.addElement("Carrefour Centro");
-        modeloLista.addElement("Jumbo Plaza");
-        modeloLista.addElement("D1 Barrio Norte");
-        modeloLista.addElement("Ara Local 45");
-        
         listaTiendas = new JList<>(modeloLista);
+        
+        // Cargar tiendas desde la base de datos
+        cargarTiendas();
         JScrollPane scrollPane = new JScrollPane(listaTiendas);
         add(scrollPane, BorderLayout.CENTER);
         
@@ -42,5 +42,23 @@ public class PanelListaTiendas extends JPanel {
     
     public DefaultListModel<String> getModeloLista() {
         return modeloLista;
+    }
+    
+    public void cargarTiendas() {
+        modeloLista.clear();
+        try {
+            TiendaDAO tiendaDAO = new TiendaDAO();
+            List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+            
+            for (Tienda tienda : tiendas) {
+                modeloLista.addElement(tienda.getNombre());
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar tiendas: " + e.getMessage());
+        }
+    }
+    
+    public void agregarTienda(Tienda tienda) {
+        modeloLista.addElement(tienda.getNombre());
     }
 }
