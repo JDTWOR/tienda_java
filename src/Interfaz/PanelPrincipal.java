@@ -3,8 +3,8 @@ package Interfaz;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
-public class PanelPrincipal extends Jframe {
-	public static final string DB_URL = "jdbc:sqlite:tiendas.db";
+public class PanelPrincipal extends JFrame {
+	public static final String DB_URL = "jdbc:sqlite:tiendas.db";
 	
 	public PanelImagen panelImagen;
 	public PanelBanner panelBanner;
@@ -14,7 +14,7 @@ public class PanelPrincipal extends Jframe {
 	
 	/* constructor */
 	public PanelPrincipal() {
-		cargarTiendas();
+		//cargarTiendas();
 		
 		setLayout(new BorderLayout());
 		setSize(700, 550);
@@ -102,4 +102,3 @@ public class PanelPrincipal extends Jframe {
 	        // y se mostrarían en el panel de mostrar tienda
 	    }
 	}
-}
