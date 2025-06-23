@@ -31,10 +31,8 @@ public class TiendaDAO {
         ResultSet rs = stmt.executeQuery(sql)) {
 
       while (rs.next()) {
-        Tienda tienda = new Tienda();
-        tienda.setId(rs.getInt("id"));
-        tienda.setNombre(rs.getString("nombre"));
-        tienda.setDireccion(rs.getString("direccion"));
+        Tienda tienda = new Tienda(rs.getInt("id"), rs.getString("nombre"), rs.getString("direccion"),
+            rs.getString("contacto"));
         lista.add(tienda);
       }
 
