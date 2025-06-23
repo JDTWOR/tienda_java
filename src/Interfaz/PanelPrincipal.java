@@ -17,7 +17,7 @@ public class PanelPrincipal extends JFrame {
 		//cargarTiendas();
 		
 		setLayout(new BorderLayout());
-		setSize(700, 550);
+		setSize(800, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Directorio de tiendas");
 		setLocationRelativeTo(null);

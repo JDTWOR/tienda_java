@@ -45,7 +45,8 @@ public class PanelOpciones extends JPanel {
         
         add(panelOrdenar);
         add(panelBuscar);
-    }
+
+   }
     
     public JComboBox<String> getCmbOrdenar() {
         return cmbOrdenar;

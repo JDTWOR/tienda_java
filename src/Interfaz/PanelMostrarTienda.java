@@ -52,7 +52,7 @@ public class PanelMostrarTienda extends JPanel {
             add(campos[i], gbc);
         }
         
-        // Campo de descripción más grande
+        // Campo de descripción
         gbc.gridx = 0;
         gbc.gridy = etiquetas.length;
         gbc.fill = GridBagConstraints.NONE;
@@ -62,7 +62,7 @@ public class PanelMostrarTienda extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        txtDescripcion = new JTextArea(4, 20);
+        txtDescripcion = new JTextArea(2, 15);
         txtDescripcion.setEditable(false);
         txtDescripcion.setBackground(Color.WHITE);
         txtDescripcion.setLineWrap(true);
@@ -76,7 +76,7 @@ public class PanelMostrarTienda extends JPanel {
         txtTelefono.setText("(601) 123-4567");
         txtDireccion.setText("Calle 123 #45-67, Bogotá");
         txtHorario.setText("Lun-Dom: 7:00 AM - 10:00 PM");
-        txtDescripcion.setText("Supermercado de cadena con amplia variedad de productos para el hogar, alimentos frescos, electrodomésticos y más. Ubicado en zona comercial con fácil acceso y parqueadero.");
+        txtDescripcion.setText("Supermercado de cadena con amplia variedad de productos para el hogar.");
     }
     
     public void actualizarInformacion(String nombre, String categoria, String telefono, 
