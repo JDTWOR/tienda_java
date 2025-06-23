@@ -13,8 +13,19 @@ public class Tienda {
     this.contacto = pcontacto;
   }
 
+  public Tienda(int pid, String pnombre, String pdireccion, String pcontacto) {
+    this.id = pid;
+    this.nombre = pnombre;
+    this.direccion = pdireccion;
+    this.contacto = pcontacto;
+  }
+
   public void setId(int pid) {
     this.id = pid;
+  }
+
+  public int getId() {
+    return this.id;
   }
 
   public String getNombre() {
