@@ -3,23 +3,23 @@ package Mundo;
 public class Tienda {
   private long id;
   private String nombre;
-  private long idCategoria;
+  private String categoria;
   private String contacto;
   private String direccion;
   private String rutaImagen;
 
-  public Tienda(String pnombre, long pidCategoria, String pcontacto, String pdireccion, String prutaImagen) {
+  public Tienda(String pnombre, String pcategoria, String pcontacto, String pdireccion, String prutaImagen) {
     this.nombre = pnombre;
-    this.idCategoria = pidCategoria;
+    this.categoria = pcategoria;
     this.contacto = pcontacto;
     this.direccion = pdireccion;
     this.rutaImagen = prutaImagen;
   }
 
-  public Tienda(long pid, String pnombre, long pidCategoria, String pcontacto, String pdireccion, String prutaImagen) {
+  public Tienda(long pid, String pnombre, String pcategoria, String pcontacto, String pdireccion, String prutaImagen) {
     this.id = pid;
     this.nombre = pnombre;
-    this.idCategoria = pidCategoria;
+    this.categoria = pcategoria;
     this.contacto = pcontacto;
     this.direccion = pdireccion;
     this.rutaImagen = prutaImagen;
@@ -57,12 +57,12 @@ public class Tienda {
     this.contacto = pcontacto;
   }
 
-  public long getIdCategoria() {
-    return idCategoria;
+  public String getCategoria() {
+    return categoria;
   }
 
-  public void setIdCategoria(long pidCategoria) {
-    this.idCategoria = pidCategoria;
+  public void setCategoria(String pcategoria) {
+    this.categoria = pcategoria;
   }
 
   public String getRutaImagen() {

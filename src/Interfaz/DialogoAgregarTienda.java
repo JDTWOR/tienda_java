@@ -23,9 +23,11 @@ public class DialogoAgregarTienda extends JDialog {
     private JButton btnGuardar, btnCancelar;
     private TiendaDAO tiendaDAO;
     private CategoriaDAO categoriaDAO;
+    private PanelListaTiendas panelListaTiendas;
 
-    public DialogoAgregarTienda(JFrame parent) {
+    public DialogoAgregarTienda(JFrame parent, PanelListaTiendas panelListaTiendas) {
         super(parent, "Agregar Nueva Tienda", true);
+        this.panelListaTiendas = panelListaTiendas;
         tiendaDAO = new TiendaDAO();
         categoriaDAO = new CategoriaDAO();
         
@@ -90,10 +92,11 @@ public class DialogoAgregarTienda extends JDialog {
             String categoriaSeleccionada = (String) cmbCategorias.getSelectedItem();
             long idCategoria = Long.parseLong(categoriaSeleccionada.split("\\(ID: ")[1].replace(")", ""));
             
+            String nombreCategoria = categoriaSeleccionada.split("\\(")[0].trim();
             Tienda tienda = new Tienda(
                 0, // ID se generará automáticamente
                 txtNombre.getText(),
-                idCategoria,
+                nombreCategoria,
                 txtContacto.getText(),
                 txtDireccion.getText(),
                 "" // Ruta imagen (opcional)
@@ -102,6 +105,7 @@ public class DialogoAgregarTienda extends JDialog {
             long idTienda = tiendaDAO.insertarTienda(tienda);
             if (idTienda != -1) {
                 tiendaDAO.insertarCategoriaTienda(idTienda, idCategoria);
+                panelListaTiendas.cargarTiendas();
             }
             dispose();
         } catch (Exception e) {

@@ -22,7 +22,7 @@ public class PanelPrincipal extends JFrame {
     public PanelPrincipal() {
         setLayout(new BorderLayout());
         
-        // Inicializar paneles primero
+        // Inicializar paneles
         panelBanner = new PanelBanner();
         mostrarTienda = new PanelMostrarTienda();
         panelListaTiendas = new PanelListaTiendas(this);
@@ -31,36 +31,27 @@ public class PanelPrincipal extends JFrame {
         
         // Configurar listener para selección de tiendas
         panelListaTiendas.getListaTiendas().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
+            if (!e.getValueIsAdjusting() && !panelListaTiendas.getListaTiendas().isSelectionEmpty()) {
                 mostrarTiendaSeleccionada();
             }
         });
         
         // Cargar tiendas iniciales
         panelListaTiendas.cargarTiendas();
-		setSize(1150, 550);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Directorio de tiendas");
-		setLocationRelativeTo(null);
-		setResizable(false);
-		
-		//Crear y agregar los paneles en las posiciones correctas
-		panelBanner = new PanelBanner();
-		add(panelBanner, BorderLayout.NORTH);
-		
-		mostrarTienda = new PanelMostrarTienda();
-		add(mostrarTienda, BorderLayout.CENTER);
-		
-		panelListaTiendas = new PanelListaTiendas(this);
-		add(panelListaTiendas, BorderLayout.WEST);
-		
-		panelImagen = new PanelImagen();
-		add(panelImagen, BorderLayout.EAST);
-		
-		panelOpciones = new PanelOpciones(this);
-		add(panelOpciones, BorderLayout.SOUTH);
+        
+        // Agregar paneles en las posiciones correctas
+        add(panelBanner, BorderLayout.NORTH);
+        add(mostrarTienda, BorderLayout.CENTER);
+        add(panelListaTiendas, BorderLayout.WEST);
+        add(panelImagen, BorderLayout.EAST);
+        add(panelOpciones, BorderLayout.SOUTH);
 
-        // Botón Agregar Categoría movido a PanelOpciones
+        // Configuración de la ventana
+        setSize(1150, 550);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Directorio de tiendas");
+        setLocationRelativeTo(null);
+        setResizable(false);
 	}
 	
 	/** Método principal para ejecutar la aplicación */
@@ -76,28 +67,41 @@ public class PanelPrincipal extends JFrame {
 	    }
 
     private void mostrarTiendaSeleccionada() {
+        System.out.println("Evento de selección detectado"); // Debug 1
+        
         String nombreTienda = panelListaTiendas.getListaTiendas().getSelectedValue();
+        System.out.println("Tienda seleccionada: " + nombreTienda); // Debug 2
+        
         if (nombreTienda != null) {
             try {
+                System.out.println("Intentando obtener tienda de la base de datos..."); // Debug 3
                 TiendaDAO tiendaDAO = new TiendaDAO();
-                List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+                Tienda tienda = tiendaDAO.obtenerTiendaPorNombre(nombreTienda);
                 
-                for (Tienda tienda : tiendas) {
-                    if (tienda.getNombre().equals(nombreTienda)) {
-                        mostrarTienda.actualizarInformacion(
-                            tienda.getNombre(),
-                            String.valueOf(tienda.getIdCategoria()),
-                            tienda.getContacto(),
-                            tienda.getDireccion(),
-                            "", 
-                            ""  
-                        );
-                        break;
-                    }
+                if (tienda != null) {
+                    System.out.println("Datos de la tienda obtenidos:"); // Debug 4
+                    System.out.println("Nombre: " + tienda.getNombre());
+                    System.out.println("Categoría: " + tienda.getCategoria());
+                    System.out.println("Contacto: " + tienda.getContacto());
+                    System.out.println("Dirección: " + tienda.getDireccion());
+                    
+                    mostrarTienda.actualizarInformacion(
+                        tienda.getNombre(),
+                        tienda.getCategoria(),
+                        tienda.getContacto(),
+                        tienda.getDireccion(),
+                        ""
+                    );
+                    System.out.println("Información mostrada en el panel"); // Debug 5
+                } else {
+                    System.out.println("No se encontró la tienda en la base de datos"); // Debug 6
                 }
             } catch (Exception e) {
                 System.err.println("Error al cargar tienda: " + e.getMessage());
+                e.printStackTrace();
             }
+        } else {
+            System.out.println("Nombre de tienda es null"); // Debug 7
         }
     }
 

@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class PanelMostrarTienda extends JPanel {
-    private JTextField txtNombre, txtCategoria, txtTelefono, txtDireccion, txtHorario;
+    private JTextField txtNombre, txtCategoria, txtTelefono, txtDireccion;
     private JTextArea txtDescripcion;
     
     public PanelMostrarTienda() {
@@ -25,13 +25,12 @@ public class PanelMostrarTienda extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         
         // Campos apropiados para un directorio de tiendas
-        String[] etiquetas = {"Nombre:", "Categoría:", "Teléfono:", "Dirección:", "Horario:"};
+        String[] etiquetas = {"Nombre:", "Categoría:", "Teléfono:", "Dirección:"};
         JTextField[] campos = {
             txtNombre = new JTextField(20),
             txtCategoria = new JTextField(20),
             txtTelefono = new JTextField(20),
-            txtDireccion = new JTextField(20),
-            txtHorario = new JTextField(20)
+            txtDireccion = new JTextField(20)
         };
         
         // Hacer los campos no editables (solo para mostrar información)
@@ -75,12 +74,11 @@ public class PanelMostrarTienda extends JPanel {
     }
     
     public void actualizarInformacion(String nombre, String categoria, String telefono, 
-                                    String direccion, String horario, String descripcion) {
+                                    String direccion, String descripcion) {
         txtNombre.setText(nombre);
         txtCategoria.setText(categoria);
         txtTelefono.setText(telefono);
         txtDireccion.setText(direccion);
-        txtHorario.setText(horario);
         txtDescripcion.setText(descripcion);
     }
     
@@ -89,7 +87,6 @@ public class PanelMostrarTienda extends JPanel {
         txtCategoria.setText("");
         txtTelefono.setText("");
         txtDireccion.setText("");
-        txtHorario.setText("");
         txtDescripcion.setText("");
     }
 }

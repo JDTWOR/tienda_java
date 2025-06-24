@@ -58,7 +58,7 @@ public class TiendaDAO {
         Tienda tienda = new Tienda(
             rs.getLong("id"), 
             rs.getString("nombre"),
-            0, // id_categoria ya no se usa directamente
+            "Sin categoría",
             rs.getString("contacto"),
             rs.getString("direccion"),
             rs.getString("ruta_imagen"));
@@ -72,6 +72,34 @@ public class TiendaDAO {
   }
 
   // Cierra la conexión
+  public Tienda obtenerTiendaPorNombre(String nombre) {
+    String sql = "SELECT t.*, " +
+                 "(SELECT GROUP_CONCAT(c.nombre SEPARATOR ', ') " +
+                 " FROM tienda_categorias tc " +
+                 " JOIN categorias c ON tc.id_categoria = c.id " +
+                 " WHERE tc.id_tienda = t.id) AS nombre_categoria " +
+                 "FROM tiendas t " +
+                 "WHERE t.nombre = ?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+      stmt.setString(1, nombre);
+      try (ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+          String nombreCategoria = rs.getString("nombre_categoria");
+          return new Tienda(
+              rs.getLong("id"), 
+              rs.getString("nombre"),
+              nombreCategoria != null ? nombreCategoria : "Sin categoría",
+              rs.getString("contacto"),
+              rs.getString("direccion"),
+              rs.getString("ruta_imagen"));
+        }
+      }
+    } catch (SQLException e) {
+      System.err.println("Error al obtener tienda por nombre: " + e.getMessage());
+    }
+    return null;
+  }
+
   public void cerrarConexion() {
     try {
       if (conn != null && !conn.isClosed()) {

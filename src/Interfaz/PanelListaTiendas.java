@@ -41,7 +41,7 @@ public class PanelListaTiendas extends JPanel {
         btnAgregar = new JButton("Agregar Tienda");
         if (panelPrincipal != null) {
             btnAgregar.addActionListener(e -> {
-                new DialogoAgregarTienda(panelPrincipal).setVisible(true);
+                new DialogoAgregarTienda(panelPrincipal, this).setVisible(true);
             });
         } else {
             btnAgregar.setEnabled(false);
