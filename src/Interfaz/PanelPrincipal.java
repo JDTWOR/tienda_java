@@ -104,48 +104,61 @@ public class PanelPrincipal extends JFrame {
         }
     }
 
-	    private void actualizarListaTiendas() {
-	        // Aquí se actualizaría la lista de tiendas en el panel de lista de tiendas
-	        // después de agregar, eliminar o actualizar una tienda
-	    }
-
-	    public void agregarTienda() {
-	        // Aquí se agregarían nuevas tiendas a la base de datos
-	        // y se actualizaría el panel de lista de tiendas
-	    }
-
-	    public void actualizarTienda() {
-	        // Aquí se actualizarían los detalles de la tienda seleccionada
-	        // y se reflejarían en los paneles correspondientes
-	    }
-
-	    public void eliminarTienda() {
-	        // Aquí se eliminaría la tienda seleccionada de la base de datos
-	        // y se actualizaría el panel de lista de tiendas
-	    }
-
-	    public void ordenarPorNombre() {
-	        // Aquí se ordenarían las tiendas por nombre
-	        // y se actualizaría el panel de lista de tiendas
-	    }
-
-	    public void agregarCategoria() {
-	        // Aquí se agregarían nuevas categorías a la tienda
-	        // y se actualizaría el panel de opciones
-	    }
-
-	    public void eliminarCategoria() {
-	        // Aquí se eliminaría una categoría de la tienda si no tiene tiendas asociadas
-	        // y se actualizaría el panel de opciones
-	    }
-
-	    public void buscarTiendaPorNombre() {
-	        // Aquí se buscaría una tienda por su nombre
-	        // y se mostraría en el panel de mostrar tienda
-	    }
-
-	    public void buscarTiendaPorCategoria() {
-	        // Aquí se buscarían tiendas por su categoría
-	        // y se mostrarían en el panel de mostrar tienda
-	    }
+	public void ordenarPorNombre() {
+	        TiendaDAO tiendaDAO = new TiendaDAO();
+	        List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+	        // Ordenar con burbuja tradicional por nombre
+	        for (int i = 0; i < tiendas.size() - 1; i++) {
+	            for (int j = 0; j < tiendas.size() - i - 1; j++) {
+	                if (tiendas.get(j).getNombre().compareToIgnoreCase(tiendas.get(j + 1).getNombre()) > 0) {
+	                    Tienda temp = tiendas.get(j);
+	                    tiendas.set(j, tiendas.get(j + 1));
+	                    tiendas.set(j + 1, temp);
+	                }
+	            }
+	        }
+	        panelListaTiendas.actualizarListaTiendas(tiendas);
 	}
+
+	public void ordenarPorCategoria() {
+	        TiendaDAO tiendaDAO = new TiendaDAO();
+	        List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+	        // Ordenar con burbuja tradicional por categoría
+	        for (int i = 0; i < tiendas.size() - 1; i++) {
+	            for (int j = 0; j < tiendas.size() - i - 1; j++) {
+	                String cat1 = tiendas.get(j).getCategoria() != null ? tiendas.get(j).getCategoria() : "";
+	                String cat2 = tiendas.get(j + 1).getCategoria() != null ? tiendas.get(j + 1).getCategoria() : "";
+	                if (cat1.compareToIgnoreCase(cat2) > 0) {
+	                    Tienda temp = tiendas.get(j);
+	                    tiendas.set(j, tiendas.get(j + 1));
+	                    tiendas.set(j + 1, temp);
+	                }
+	            }
+	        }
+	        panelListaTiendas.actualizarListaTiendas(tiendas);
+	}
+
+	public void buscarTiendaPorNombre(String nombre) {
+	    TiendaDAO tiendaDAO = new TiendaDAO();
+	    List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+        List<Tienda> resultado = new java.util.ArrayList<>();
+	    for (Tienda t : tiendas) {
+	        if (t.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+	            resultado.add(t);
+	            }
+	        }
+	        panelListaTiendas.actualizarListaTiendas(resultado);
+	    }
+
+	public void buscarTiendaPorCategoria(String categoria) {
+	    TiendaDAO tiendaDAO = new TiendaDAO();
+	    List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+        List<Tienda> resultado = new java.util.ArrayList<>();
+	    for (Tienda t : tiendas) {
+	        if (t.getCategoria() != null && t.getCategoria().toLowerCase().contains(categoria.toLowerCase())) {
+	            resultado.add(t);
+	        }
+        }
+        panelListaTiendas.actualizarListaTiendas(resultado);
+	    }
+}

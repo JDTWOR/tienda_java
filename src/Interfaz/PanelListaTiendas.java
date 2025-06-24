@@ -74,4 +74,11 @@ public class PanelListaTiendas extends JPanel {
     public void agregarTienda(Tienda tienda) {
         modeloLista.addElement(tienda.getNombre());
     }
+    
+    public void actualizarListaTiendas(List<Tienda> tiendas) {
+        modeloLista.clear();
+        for (Tienda tienda : tiendas) {
+            modeloLista.addElement(tienda.getNombre());
+        }
+    }
 }

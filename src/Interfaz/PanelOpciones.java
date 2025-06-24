@@ -25,7 +25,7 @@ public class PanelOpciones extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Panel de ordenar
-        JPanel panelOrdenar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel panelOrdenar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
         panelOrdenar.setBorder(BorderFactory.createTitledBorder("Ordenar"));
         
         panelOrdenar.add(new JLabel("Por:"));
@@ -68,7 +68,29 @@ public class PanelOpciones extends JPanel {
         add(panelBuscar);
         add(panelCategorias);
 
-   }
+        btnOrdenar.addActionListener(e -> {
+            if (panelPrincipal != null) {
+                String criterio = (String) cmbOrdenar.getSelectedItem();
+                if (criterio.equals("Nombre")) {
+                    panelPrincipal.ordenarPorNombre();
+                } else if (criterio.equals("Categoría")) {
+                    panelPrincipal.ordenarPorCategoria();
+                }
+            }
+        });
+
+        btnBuscar.addActionListener(e -> {
+            if (panelPrincipal != null) {
+                String criterio = (String) cmbBuscar.getSelectedItem();
+                String texto = txtBuscar.getText();
+                if (criterio.equals("Nombre")) {
+                    panelPrincipal.buscarTiendaPorNombre(texto);
+                } else if (criterio.equals("Categoría")) {
+                    panelPrincipal.buscarTiendaPorCategoria(texto);
+                }
+            }
+        });
+    }
     
     public JComboBox<String> getCmbOrdenar() {
         return cmbOrdenar;
