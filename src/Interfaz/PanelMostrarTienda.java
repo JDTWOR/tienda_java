@@ -8,13 +8,10 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class PanelMostrarTienda extends JPanel {
     private JTextField txtNombre, txtCategoria, txtTelefono, txtDireccion;
-    private JTextArea txtDescripcion;
     
     public PanelMostrarTienda() {
         setLayout(new GridBagLayout());
@@ -24,7 +21,7 @@ public class PanelMostrarTienda extends JPanel {
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.anchor = GridBagConstraints.WEST;
         
-        // Campos apropiados para un directorio de tiendas
+        // Campos para mostrar información de la tienda
         String[] etiquetas = {"Nombre:", "Categoría:", "Teléfono:", "Dirección:"};
         JTextField[] campos = {
             txtNombre = new JTextField(20),
@@ -51,35 +48,16 @@ public class PanelMostrarTienda extends JPanel {
             add(campos[i], gbc);
         }
         
-        // Campo de descripción
-        gbc.gridx = 0;
-        gbc.gridy = etiquetas.length;
-        gbc.fill = GridBagConstraints.NONE;
-        add(new JLabel("Descripción:"), gbc);
-        
-        gbc.gridx = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        txtDescripcion = new JTextArea(2, 15);
-        txtDescripcion.setEditable(false);
-        txtDescripcion.setBackground(Color.WHITE);
-        txtDescripcion.setLineWrap(true);
-        txtDescripcion.setWrapStyleWord(true);
-        JScrollPane scrollDesc = new JScrollPane(txtDescripcion);
-        add(scrollDesc, gbc);
-        
         // Inicializar campos vacíos
         limpiarInformacion();
     }
     
     public void actualizarInformacion(String nombre, String categoria, String telefono, 
-                                    String direccion, String descripcion) {
+                                    String direccion) {
         txtNombre.setText(nombre);
         txtCategoria.setText(categoria);
         txtTelefono.setText(telefono);
         txtDireccion.setText(direccion);
-        txtDescripcion.setText(descripcion);
     }
     
     public void limpiarInformacion() {
@@ -87,6 +65,5 @@ public class PanelMostrarTienda extends JPanel {
         txtCategoria.setText("");
         txtTelefono.setText("");
         txtDireccion.setText("");
-        txtDescripcion.setText("");
     }
 }

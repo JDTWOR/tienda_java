@@ -89,8 +89,7 @@ public class PanelPrincipal extends JFrame {
                         tienda.getNombre(),
                         tienda.getCategoria(),
                         tienda.getContacto(),
-                        tienda.getDireccion(),
-                        ""
+                        tienda.getDireccion()
                     );
                     System.out.println("Información mostrada en el panel"); // Debug 5
                 } else {
