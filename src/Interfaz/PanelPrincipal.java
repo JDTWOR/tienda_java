@@ -25,7 +25,7 @@ public class PanelPrincipal extends JFrame {
         // Inicializar paneles primero
         panelBanner = new PanelBanner();
         mostrarTienda = new PanelMostrarTienda();
-        panelListaTiendas = new PanelListaTiendas();
+        panelListaTiendas = new PanelListaTiendas(this);
         panelImagen = new PanelImagen();
         panelOpciones = new PanelOpciones(this);
         
@@ -51,7 +51,7 @@ public class PanelPrincipal extends JFrame {
 		mostrarTienda = new PanelMostrarTienda();
 		add(mostrarTienda, BorderLayout.CENTER);
 		
-		panelListaTiendas = new PanelListaTiendas();
+		panelListaTiendas = new PanelListaTiendas(this);
 		add(panelListaTiendas, BorderLayout.WEST);
 		
 		panelImagen = new PanelImagen();
@@ -89,8 +89,8 @@ public class PanelPrincipal extends JFrame {
                             String.valueOf(tienda.getIdCategoria()),
                             tienda.getContacto(),
                             tienda.getDireccion(),
-                            "", // Horario - agregar campo si es necesario
-                            ""  // Descripción - agregar campo si es necesario
+                            "", 
+                            ""  
                         );
                         break;
                     }

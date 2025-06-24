@@ -55,7 +55,9 @@ public class DialogoAgregarCategoria extends JDialog {
         try {
             String nombre = txtNombre.getText().trim();
             if (!nombre.isEmpty()) {
-                Categoria categoria = new Categoria(nombre);
+                // Generar ID único basado en timestamp
+                long id = System.currentTimeMillis();
+                Categoria categoria = new Categoria(id, nombre);
                 categoriaDAO.insertarCategoria(categoria);
                 dispose();
             }

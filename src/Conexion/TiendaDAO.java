@@ -12,24 +12,45 @@ public class TiendaDAO {
     conn = new Conexiondb().conectar();
   }
 
-  public void insertarTienda(Tienda tienda) {
-    String sql = "INSERT INTO tiendas(nombre, id_categoria, contacto, direccion, ruta_imagen) VALUES (?, ?, ?, ?, ?)";
-    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+  public long insertarTienda(Tienda tienda) {
+    String sql = "INSERT INTO tiendas(nombre, contacto, direccion, ruta_imagen) VALUES (?, ?, ?, ?)";
+    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       stmt.setString(1, tienda.getNombre());
-      stmt.setLong(2, tienda.getIdCategoria());
-      stmt.setString(3, tienda.getContacto());
-      stmt.setString(4, tienda.getDireccion());
-      stmt.setString(5, tienda.getRutaImagen());
+      stmt.setString(2, tienda.getContacto());
+      stmt.setString(3, tienda.getDireccion());
+      stmt.setString(4, tienda.getRutaImagen());
       stmt.executeUpdate();
-      System.out.println("Tienda insertada correctamente.");
+      
+      try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+        if (generatedKeys.next()) {
+          long idTienda = generatedKeys.getLong(1);
+          System.out.println("Tienda insertada correctamente con ID: " + idTienda);
+          return idTienda;
+        }
+      }
     } catch (SQLException e) {
       System.err.println("Error al insertar tienda: " + e.getMessage());
+    }
+    return -1;
+  }
+
+  public void insertarCategoriaTienda(long idTienda, long idCategoria) {
+    String sql = "INSERT INTO tienda_categorias(id_tienda, id_categoria) VALUES (?, ?)";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+      stmt.setLong(1, idTienda);
+      stmt.setLong(2, idCategoria);
+      stmt.executeUpdate();
+      System.out.println("Relación tienda-categoría insertada correctamente.");
+    } catch (SQLException e) {
+      System.err.println("Error al insertar relación tienda-categoría: " + e.getMessage());
     }
   }
 
   public List<Tienda> obtenerTiendas() {
     List<Tienda> lista = new ArrayList<>();
-    String sql = "SELECT * FROM tiendas";
+    String sql = "SELECT t.*, GROUP_CONCAT(tc.id_categoria) AS categorias " +
+                 "FROM tiendas t LEFT JOIN tienda_categorias tc ON t.id = tc.id_tienda " +
+                 "GROUP BY t.id";
     try (Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql)) {
 

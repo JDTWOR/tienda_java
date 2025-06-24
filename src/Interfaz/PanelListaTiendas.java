@@ -17,8 +17,14 @@ public class PanelListaTiendas extends JPanel {
     private JList<String> listaTiendas;
     private DefaultListModel<String> modeloLista;
     private JButton btnAgregar;
+    private PanelPrincipal panelPrincipal;
     
     public PanelListaTiendas() {
+        this(null);
+    }
+    
+    public PanelListaTiendas(PanelPrincipal panelPrincipal) {
+        this.panelPrincipal = panelPrincipal;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Lista de tiendas"));
         setPreferredSize(new Dimension(220, 400));
@@ -33,6 +39,13 @@ public class PanelListaTiendas extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         
         btnAgregar = new JButton("Agregar Tienda");
+        if (panelPrincipal != null) {
+            btnAgregar.addActionListener(e -> {
+                new DialogoAgregarTienda(panelPrincipal).setVisible(true);
+            });
+        } else {
+            btnAgregar.setEnabled(false);
+        }
         add(btnAgregar, BorderLayout.SOUTH);
     }
     
