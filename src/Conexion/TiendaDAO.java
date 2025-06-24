@@ -58,7 +58,7 @@ public class TiendaDAO {
         Tienda tienda = new Tienda(
             rs.getLong("id"), 
             rs.getString("nombre"),
-            rs.getLong("id_categoria"),
+            0, // id_categoria ya no se usa directamente
             rs.getString("contacto"),
             rs.getString("direccion"),
             rs.getString("ruta_imagen"));
