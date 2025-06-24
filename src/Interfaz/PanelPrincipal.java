@@ -24,8 +24,8 @@ public class PanelPrincipal extends JFrame {
         
         // Inicializar paneles
         panelBanner = new PanelBanner();
-        mostrarTienda = new PanelMostrarTienda();
         panelListaTiendas = new PanelListaTiendas(this);
+        mostrarTienda = new PanelMostrarTienda(panelListaTiendas);
         panelImagen = new PanelImagen();
         panelOpciones = new PanelOpciones(this);
         

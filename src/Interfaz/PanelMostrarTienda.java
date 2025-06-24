@@ -9,14 +9,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JButton;
 
 public class PanelMostrarTienda extends JPanel {
     private JTextField txtNombre, txtCategoria, txtTelefono, txtDireccion;
+    private JButton btnEliminar;
+    private PanelListaTiendas panelListaTiendas;
     
-    public PanelMostrarTienda() {
-        setLayout(new GridBagLayout());
+    public PanelMostrarTienda(PanelListaTiendas panelListaTiendas) {
+        this.panelListaTiendas = panelListaTiendas;
+        setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Información de la tienda"));
         
+        JPanel panelCampos = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.anchor = GridBagConstraints.WEST;
@@ -41,12 +46,20 @@ public class PanelMostrarTienda extends JPanel {
             gbc.gridx = 0;
             gbc.gridy = i;
             gbc.fill = GridBagConstraints.NONE;
-            add(new JLabel(etiquetas[i]), gbc);
+            panelCampos.add(new JLabel(etiquetas[i]), gbc);
             
             gbc.gridx = 1;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-            add(campos[i], gbc);
+            panelCampos.add(campos[i], gbc);
         }
+        
+        add(panelCampos, BorderLayout.CENTER);
+        
+        // Botón Eliminar Tienda
+        btnEliminar = new JButton("Eliminar tienda");
+        add(btnEliminar, BorderLayout.SOUTH);
+        
+        btnEliminar.addActionListener(e -> eliminarTiendaActual());
         
         // Inicializar campos vacíos
         limpiarInformacion();
@@ -65,5 +78,27 @@ public class PanelMostrarTienda extends JPanel {
         txtCategoria.setText("");
         txtTelefono.setText("");
         txtDireccion.setText("");
+    }
+    
+    private void eliminarTiendaActual() {
+        String nombre = txtNombre.getText();
+        if (nombre == null || nombre.trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay tienda seleccionada para eliminar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar la tienda '" + nombre + "'?", "Confirmar eliminación", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            Conexion.TiendaDAO tiendaDAO = new Conexion.TiendaDAO();
+            boolean exito = tiendaDAO.eliminarTiendaPorNombre(nombre);
+            if (exito) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Tienda eliminada correctamente.", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarInformacion();
+                if (panelListaTiendas != null) {
+                    panelListaTiendas.cargarTiendas();
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "No se pudo eliminar la tienda.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

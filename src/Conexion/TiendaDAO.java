@@ -110,4 +110,33 @@ public class TiendaDAO {
       System.err.println("Error al cerrar la conexión: " + e.getMessage());
     }
   }
+
+  // Elimina una tienda y sus relaciones por nombre
+  public boolean eliminarTiendaPorNombre(String nombre) {
+    String sqlSelect = "SELECT id FROM tiendas WHERE nombre = ?";
+    String sqlDeleteRelaciones = "DELETE FROM tienda_categorias WHERE id_tienda = ?";
+    String sqlDeleteTienda = "DELETE FROM tiendas WHERE id = ?";
+    try (PreparedStatement stmtSelect = conn.prepareStatement(sqlSelect)) {
+      stmtSelect.setString(1, nombre);
+      try (ResultSet rs = stmtSelect.executeQuery()) {
+        if (rs.next()) {
+          long idTienda = rs.getLong("id");
+          // Eliminar relaciones en tienda_categorias
+          try (PreparedStatement stmtRel = conn.prepareStatement(sqlDeleteRelaciones)) {
+            stmtRel.setLong(1, idTienda);
+            stmtRel.executeUpdate();
+          }
+          // Eliminar tienda
+          try (PreparedStatement stmtTienda = conn.prepareStatement(sqlDeleteTienda)) {
+            stmtTienda.setLong(1, idTienda);
+            int filas = stmtTienda.executeUpdate();
+            return filas > 0;
+          }
+        }
+      }
+    } catch (SQLException e) {
+      System.err.println("Error al eliminar tienda: " + e.getMessage());
+    }
+    return false;
+  }
 }
