@@ -2,7 +2,9 @@ package Interfaz;
 
 import java.awt.BorderLayout;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import Conexion.TiendaDAO;
 import Mundo.Tienda;
 
@@ -14,6 +16,7 @@ public class PanelPrincipal extends JFrame {
 	public PanelMostrarTienda mostrarTienda;
 	public PanelOpciones panelOpciones;
 	public PanelListaTiendas panelListaTiendas;
+	private JButton btnAgregarCategoria;
 	
     /* constructor */
     public PanelPrincipal() {
@@ -24,7 +27,7 @@ public class PanelPrincipal extends JFrame {
         mostrarTienda = new PanelMostrarTienda();
         panelListaTiendas = new PanelListaTiendas();
         panelImagen = new PanelImagen();
-        panelOpciones = new PanelOpciones();
+        panelOpciones = new PanelOpciones(this);
         
         // Configurar listener para selección de tiendas
         panelListaTiendas.getListaTiendas().addListSelectionListener(e -> {
@@ -35,7 +38,7 @@ public class PanelPrincipal extends JFrame {
         
         // Cargar tiendas iniciales
         panelListaTiendas.cargarTiendas();
-		setSize(800, 550);
+		setSize(1150, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Directorio de tiendas");
 		setLocationRelativeTo(null);
@@ -54,8 +57,10 @@ public class PanelPrincipal extends JFrame {
 		panelImagen = new PanelImagen();
 		add(panelImagen, BorderLayout.EAST);
 		
-		panelOpciones = new PanelOpciones();
-		add(panelOpciones, BorderLayout.SOUTH);	
+		panelOpciones = new PanelOpciones(this);
+		add(panelOpciones, BorderLayout.SOUTH);
+
+        // Botón Agregar Categoría movido a PanelOpciones
 	}
 	
 	/** Método principal para ejecutar la aplicación */

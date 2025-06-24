@@ -13,9 +13,15 @@ public class PanelOpciones extends JPanel {
     private JComboBox<String> cmbOrdenar, cmbBuscar;
     private JTextField txtBuscar;
     private JButton btnOrdenar, btnBuscar;
+    private PanelPrincipal panelPrincipal;
     
     public PanelOpciones() {
-        setLayout(new GridLayout(1, 2, 15, 5));
+        this(null);
+    }
+    
+    public PanelOpciones(PanelPrincipal panelPrincipal) {
+        this.panelPrincipal = panelPrincipal;
+        setLayout(new GridLayout(1, 3, 15, 5));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Panel de ordenar
@@ -42,9 +48,25 @@ public class PanelOpciones extends JPanel {
         panelBuscar.add(cmbBuscar);
         panelBuscar.add(txtBuscar);
         panelBuscar.add(btnBuscar);
+
+        // Panel de categorías
+        JPanel panelCategorias = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelCategorias.setBorder(BorderFactory.createTitledBorder("Categorías"));
+        
+        JButton btnAgregarCategoria = new JButton("Agregar Categoría");
+        if (panelPrincipal != null) {
+            btnAgregarCategoria.addActionListener(e -> {
+                new DialogoAgregarCategoria(panelPrincipal).setVisible(true);
+            });
+        } else {
+            btnAgregarCategoria.setEnabled(false);
+        }
+        
+        panelCategorias.add(btnAgregarCategoria);
         
         add(panelOrdenar);
         add(panelBuscar);
+        add(panelCategorias);
 
    }
     
