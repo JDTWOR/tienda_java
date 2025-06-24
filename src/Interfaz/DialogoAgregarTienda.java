@@ -12,18 +12,20 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JFileChooser;
 import Conexion.CategoriaDAO;
 import Conexion.TiendaDAO;
 import Mundo.Categoria;
 import Mundo.Tienda;
 
 public class DialogoAgregarTienda extends JDialog {
-    private JTextField txtNombre, txtContacto, txtDireccion;
+    private JTextField txtNombre, txtContacto, txtDireccion, txtRutaImagen;
     private JComboBox<String> cmbCategorias;
-    private JButton btnGuardar, btnCancelar;
+    private JButton btnGuardar, btnCancelar, btnSeleccionarImagen;
     private TiendaDAO tiendaDAO;
     private CategoriaDAO categoriaDAO;
     private PanelListaTiendas panelListaTiendas;
+    private String rutaImagenSeleccionada;
 
     public DialogoAgregarTienda(JFrame parent, PanelListaTiendas panelListaTiendas) {
         super(parent, "Agregar Nueva Tienda", true);
@@ -54,6 +56,15 @@ public class DialogoAgregarTienda extends JDialog {
         txtDireccion = new JTextField();
         panelCampos.add(txtDireccion);
         
+        panelCampos.add(new JLabel("Imagen:"));
+        JPanel panelImagen = new JPanel(new BorderLayout());
+        txtRutaImagen = new JTextField();
+        txtRutaImagen.setEditable(false);
+        btnSeleccionarImagen = new JButton("Seleccionar Imagen");
+        panelImagen.add(txtRutaImagen, BorderLayout.CENTER);
+        panelImagen.add(btnSeleccionarImagen, BorderLayout.EAST);
+        panelCampos.add(panelImagen);
+
         add(panelCampos, BorderLayout.CENTER);
 
         // Panel de botones
@@ -73,6 +84,9 @@ public class DialogoAgregarTienda extends JDialog {
         panelBotones.add(btnGuardar);
         panelBotones.add(btnCancelar);
         add(panelBotones, BorderLayout.SOUTH);
+
+        // Acción del botón
+        btnSeleccionarImagen.addActionListener(e -> seleccionarImagen());
     }
 
     private void cargarCategorias() {
@@ -99,7 +113,7 @@ public class DialogoAgregarTienda extends JDialog {
                 nombreCategoria,
                 txtContacto.getText(),
                 txtDireccion.getText(),
-                "" // Ruta imagen (opcional)
+                rutaImagenSeleccionada // Ruta imagen (opcional)
             );
             
             long idTienda = tiendaDAO.insertarTienda(tienda);
@@ -107,9 +121,23 @@ public class DialogoAgregarTienda extends JDialog {
                 tiendaDAO.insertarCategoriaTienda(idTienda, idCategoria);
                 panelListaTiendas.cargarTiendas();
             }
+
             dispose();
         } catch (Exception e) {
             System.err.println("Error al guardar tienda: " + e.getMessage());
+        }
+    }
+
+    private void seleccionarImagen() {
+        JFileChooser fileChooser = new JFileChooser("images");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif"));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            java.io.File selectedFile = fileChooser.getSelectedFile();
+            rutaImagenSeleccionada = selectedFile.getPath();
+            txtRutaImagen.setText(rutaImagenSeleccionada);
         }
     }
 }

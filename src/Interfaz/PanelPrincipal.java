@@ -92,6 +92,7 @@ public class PanelPrincipal extends JFrame {
                         tienda.getDireccion()
                     );
                     System.out.println("Información mostrada en el panel"); // Debug 5
+                    panelImagen.setImagen(tienda.getRutaImagen());
                 } else {
                     System.out.println("No se encontró la tienda en la base de datos"); // Debug 6
                 }
