@@ -14,6 +14,7 @@ import javax.swing.JButton;
 public class PanelMostrarTienda extends JPanel {
     private JTextField txtNombre, txtCategoria, txtTelefono, txtDireccion;
     private JButton btnEliminar;
+    private JButton btnEditar;
     private PanelListaTiendas panelListaTiendas;
     
     public PanelMostrarTienda(PanelListaTiendas panelListaTiendas) {
@@ -26,7 +27,7 @@ public class PanelMostrarTienda extends JPanel {
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.anchor = GridBagConstraints.WEST;
         
-        // Campos para mostrar información de la tienda
+      
         String[] etiquetas = {"Nombre:", "Categoría:", "Teléfono:", "Dirección:"};
         JTextField[] campos = {
             txtNombre = new JTextField(20),
@@ -35,13 +36,13 @@ public class PanelMostrarTienda extends JPanel {
             txtDireccion = new JTextField(20)
         };
         
-        // Hacer los campos no editables (solo para mostrar información)
+        
         for (JTextField campo : campos) {
             campo.setEditable(false);
             campo.setBackground(Color.WHITE);
         }
         
-        // Agregar etiquetas y campos
+    
         for (int i = 0; i < etiquetas.length; i++) {
             gbc.gridx = 0;
             gbc.gridy = i;
@@ -55,13 +56,19 @@ public class PanelMostrarTienda extends JPanel {
         
         add(panelCampos, BorderLayout.CENTER);
         
-        // Botón Eliminar Tienda
+ 
+        btnEditar = new JButton("Editar tienda");
         btnEliminar = new JButton("Eliminar tienda");
-        add(btnEliminar, BorderLayout.SOUTH);
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        panelBotones.add(btnEditar);
+        panelBotones.add(btnEliminar);
+        add(panelBotones, BorderLayout.SOUTH);
         
+        btnEditar.addActionListener(e -> mostrarDialogoEditarTienda());
         btnEliminar.addActionListener(e -> eliminarTiendaActual());
         
-        // Inicializar campos vacíos
+   
         limpiarInformacion();
     }
     
@@ -100,5 +107,21 @@ public class PanelMostrarTienda extends JPanel {
                 javax.swing.JOptionPane.showMessageDialog(this, "No se pudo eliminar la tienda.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+    
+    private void mostrarDialogoEditarTienda() {
+        String nombre = txtNombre.getText();
+        String categoria = txtCategoria.getText();
+        String telefono = txtTelefono.getText();
+        String direccion = txtDireccion.getText();
+        if (nombre == null || nombre.trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay tienda seleccionada para editar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        DialogoEditarTienda dialogo = new DialogoEditarTienda(nombre, categoria, telefono, direccion, panelListaTiendas);
+        dialogo.setVisible(true);
+        
+        panelListaTiendas.cargarTiendas();
+   
     }
 }

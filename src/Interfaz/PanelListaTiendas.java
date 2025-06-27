@@ -29,11 +29,10 @@ public class PanelListaTiendas extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Lista de tiendas"));
         setPreferredSize(new Dimension(220, 400));
         
-        // Crear lista vacía que se llenará desde la base de datos
+       
         modeloLista = new DefaultListModel<>();
         listaTiendas = new JList<>(modeloLista);
         
-        // Cargar tiendas desde la base de datos
         cargarTiendas();
         JScrollPane scrollPane = new JScrollPane(listaTiendas);
         add(scrollPane, BorderLayout.CENTER);

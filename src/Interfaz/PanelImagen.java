@@ -39,26 +39,26 @@ public class PanelImagen extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // Dibujar un placeholder para logo de tienda
+      
         int width = getWidth() - 40;
         int height = getHeight() - 60;
         int x = 20;
         int y = 30;
         
-        // Fondo del logo
+       
         g2d.setColor(new Color(240, 240, 240));
         g2d.fillRoundRect(x, y, width, height, 10, 10);
         
-        // Borde
+        
         g2d.setColor(Color.GRAY);
         g2d.drawRoundRect(x, y, width, height, 10, 10);
         
-        // Texto placeholder
+        
         g2d.setColor(Color.DARK_GRAY);
         g2d.drawString("Logo de", x + 20, y + height/2 - 10);
         g2d.drawString("la tienda", x + 20, y + height/2 + 5);
         
-        // Simular un icono de tienda simple
+     
         g2d.setColor(new Color(70, 130, 180));
         g2d.fillRect(x + width/2 - 15, y + 20, 30, 20);
         g2d.fillRect(x + width/2 - 10, y + 15, 20, 5);

@@ -71,7 +71,6 @@ public class TiendaDAO {
     return lista;
   }
 
-  // Cierra la conexión
   public Tienda obtenerTiendaPorNombre(String nombre) {
     String sql = "SELECT t.*, " +
                  "(SELECT GROUP_CONCAT(c.nombre SEPARATOR ', ') " +
@@ -111,7 +110,6 @@ public class TiendaDAO {
     }
   }
 
-  // Elimina una tienda y sus relaciones por nombre
   public boolean eliminarTiendaPorNombre(String nombre) {
     String sqlSelect = "SELECT id FROM tiendas WHERE nombre = ?";
     String sqlDeleteRelaciones = "DELETE FROM tienda_categorias WHERE id_tienda = ?";
@@ -121,12 +119,10 @@ public class TiendaDAO {
       try (ResultSet rs = stmtSelect.executeQuery()) {
         if (rs.next()) {
           long idTienda = rs.getLong("id");
-          // Eliminar relaciones en tienda_categorias
           try (PreparedStatement stmtRel = conn.prepareStatement(sqlDeleteRelaciones)) {
             stmtRel.setLong(1, idTienda);
             stmtRel.executeUpdate();
           }
-          // Eliminar tienda
           try (PreparedStatement stmtTienda = conn.prepareStatement(sqlDeleteTienda)) {
             stmtTienda.setLong(1, idTienda);
             int filas = stmtTienda.executeUpdate();
@@ -136,6 +132,44 @@ public class TiendaDAO {
       }
     } catch (SQLException e) {
       System.err.println("Error al eliminar tienda: " + e.getMessage());
+    }
+    return false;
+  }
+
+  public boolean actualizarTiendaPorNombre(String nombreAntiguo, String nuevoNombre, String nuevaCategoria, String nuevoContacto, String nuevaDireccion, long idNuevaCategoria) {
+    String sqlSelect = "SELECT id FROM tiendas WHERE nombre = ?";
+    String sqlUpdate = "UPDATE tiendas SET nombre = ?, contacto = ?, direccion = ? WHERE nombre = ?";
+    String sqlDeleteRel = "DELETE FROM tienda_categorias WHERE id_tienda = ?";
+    String sqlInsertRel = "INSERT INTO tienda_categorias(id_tienda, id_categoria) VALUES (?, ?)";
+    try (PreparedStatement stmtSelect = conn.prepareStatement(sqlSelect)) {
+      stmtSelect.setString(1, nombreAntiguo);
+      try (ResultSet rs = stmtSelect.executeQuery()) {
+        if (rs.next()) {
+          long idTienda = rs.getLong("id");
+          // Actualizar datos principales
+          try (PreparedStatement stmt = conn.prepareStatement(sqlUpdate)) {
+            stmt.setString(1, nuevoNombre);
+            stmt.setString(2, nuevoContacto);
+            stmt.setString(3, nuevaDireccion);
+            stmt.setString(4, nombreAntiguo);
+            stmt.executeUpdate();
+          }
+          // Eliminar relación anterior
+          try (PreparedStatement stmtDel = conn.prepareStatement(sqlDeleteRel)) {
+            stmtDel.setLong(1, idTienda);
+            stmtDel.executeUpdate();
+          }
+          // Insertar nueva relación
+          try (PreparedStatement stmtIns = conn.prepareStatement(sqlInsertRel)) {
+            stmtIns.setLong(1, idTienda);
+            stmtIns.setLong(2, idNuevaCategoria);
+            stmtIns.executeUpdate();
+          }
+          return true;
+        }
+      }
+    } catch (SQLException e) {
+      System.err.println("Error al actualizar tienda: " + e.getMessage());
     }
     return false;
   }

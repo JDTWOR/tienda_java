@@ -24,7 +24,7 @@ public class PanelOpciones extends JPanel {
         setLayout(new GridLayout(1, 3, 15, 5));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // Panel de ordenar
+     
         JPanel panelOrdenar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
         panelOrdenar.setBorder(BorderFactory.createTitledBorder("Ordenar"));
         
@@ -35,7 +35,7 @@ public class PanelOpciones extends JPanel {
         panelOrdenar.add(cmbOrdenar);
         panelOrdenar.add(btnOrdenar);
         
-        // Panel de buscar
+  
         JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelBuscar.setBorder(BorderFactory.createTitledBorder("Buscar"));
         
@@ -49,7 +49,6 @@ public class PanelOpciones extends JPanel {
         panelBuscar.add(txtBuscar);
         panelBuscar.add(btnBuscar);
 
-        // Panel de categorías
         JPanel panelCategorias = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelCategorias.setBorder(BorderFactory.createTitledBorder("Categorías"));
         

@@ -5,14 +5,16 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JFileChooser;
+
 import Conexion.CategoriaDAO;
 import Conexion.TiendaDAO;
 import Mundo.Categoria;
@@ -108,12 +110,12 @@ public class DialogoAgregarTienda extends JDialog {
             
             String nombreCategoria = categoriaSeleccionada.split("\\(")[0].trim();
             Tienda tienda = new Tienda(
-                0, // ID se generará automáticamente
+                0, 
                 txtNombre.getText(),
                 nombreCategoria,
                 txtContacto.getText(),
                 txtDireccion.getText(),
-                rutaImagenSeleccionada // Ruta imagen (opcional)
+                rutaImagenSeleccionada 
             );
             
             long idTienda = tiendaDAO.insertarTienda(tienda);
