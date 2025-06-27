@@ -14,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import Conexion.CategoriaDAO;
 import Conexion.TiendaDAO;
@@ -36,58 +39,82 @@ public class DialogoAgregarTienda extends JDialog {
         categoriaDAO = new CategoriaDAO();
         
         setLayout(new BorderLayout());
-        setSize(400, 300);
+        setSize(440, 340);
         setLocationRelativeTo(parent);
 
-        // Panel de campos
-        JPanel panelCampos = new JPanel(new GridLayout(4, 2, 10, 10));
-        panelCampos.add(new JLabel("Nombre:"));
-        txtNombre = new JTextField();
-        panelCampos.add(txtNombre);
-        
-        panelCampos.add(new JLabel("Categoría:"));
+        // Panel de campos con mejor estética
+        JPanel panelCampos = new JPanel(new GridBagLayout());
+        panelCampos.setBorder(javax.swing.BorderFactory.createEmptyBorder(18, 18, 10, 18));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(7, 7, 7, 7);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+        int fila = 0;
+        // Nombre
+        gbc.gridx = 0; gbc.gridy = fila;
+        panelCampos.add(new JLabel("Nombre:"), gbc);
+        gbc.gridx = 1;
+        txtNombre = new JTextField(22);
+        panelCampos.add(txtNombre, gbc);
+        fila++;
+
+        // Categoría
+        gbc.gridx = 0; gbc.gridy = fila;
+        panelCampos.add(new JLabel("Categoría:"), gbc);
+        gbc.gridx = 1;
         cmbCategorias = new JComboBox<>();
         cargarCategorias();
-        panelCampos.add(cmbCategorias);
-        
-        panelCampos.add(new JLabel("Contacto:"));
-        txtContacto = new JTextField();
-        panelCampos.add(txtContacto);
-        
-        panelCampos.add(new JLabel("Dirección:"));
-        txtDireccion = new JTextField();
-        panelCampos.add(txtDireccion);
-        
-        panelCampos.add(new JLabel("Imagen:"));
-        JPanel panelImagen = new JPanel(new BorderLayout());
+        panelCampos.add(cmbCategorias, gbc);
+        fila++;
+
+        // Contacto
+        gbc.gridx = 0; gbc.gridy = fila;
+        panelCampos.add(new JLabel("Contacto:"), gbc);
+        gbc.gridx = 1;
+        txtContacto = new JTextField(22);
+        panelCampos.add(txtContacto, gbc);
+        fila++;
+
+        // Dirección
+        gbc.gridx = 0; gbc.gridy = fila;
+        panelCampos.add(new JLabel("Dirección:"), gbc);
+        gbc.gridx = 1;
+        txtDireccion = new JTextField(22);
+        panelCampos.add(txtDireccion, gbc);
+        fila++;
+
+        // Imagen
+        gbc.gridx = 0; gbc.gridy = fila;
+        panelCampos.add(new JLabel("Imagen:"), gbc);
+        gbc.gridx = 1;
+        JPanel panelImagen = new JPanel(new BorderLayout(7, 0));
         txtRutaImagen = new JTextField();
         txtRutaImagen.setEditable(false);
         btnSeleccionarImagen = new JButton("Seleccionar Imagen");
         panelImagen.add(txtRutaImagen, BorderLayout.CENTER);
         panelImagen.add(btnSeleccionarImagen, BorderLayout.EAST);
-        panelCampos.add(panelImagen);
+        panelCampos.add(panelImagen, gbc);
 
         add(panelCampos, BorderLayout.CENTER);
 
-        // Panel de botones
+        // Panel de botones con margen superior
         JPanel panelBotones = new JPanel();
+        panelBotones.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         btnGuardar = new JButton("Guardar");
         btnCancelar = new JButton("Cancelar");
-        
+        panelBotones.add(btnGuardar);
+        panelBotones.add(btnCancelar);
+        add(panelBotones, BorderLayout.SOUTH);
+
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarTienda();
             }
         });
-        
         btnCancelar.addActionListener(e -> dispose());
-        
-        panelBotones.add(btnGuardar);
-        panelBotones.add(btnCancelar);
-        add(panelBotones, BorderLayout.SOUTH);
-
-        // Acción del botón
         btnSeleccionarImagen.addActionListener(e -> seleccionarImagen());
     }
 
