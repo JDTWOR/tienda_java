@@ -3,36 +3,48 @@ package Interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import Conexion.TiendaDAO;
+import Mundo.Tienda;
 
 public class PanelListaTiendas extends JPanel {
     private JList<String> listaTiendas;
     private DefaultListModel<String> modeloLista;
     private JButton btnAgregar;
+    private PanelPrincipal panelPrincipal;
     
     public PanelListaTiendas() {
+        this(null);
+    }
+    
+    public PanelListaTiendas(PanelPrincipal panelPrincipal) {
+        this.panelPrincipal = panelPrincipal;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Lista de tiendas"));
         setPreferredSize(new Dimension(220, 400));
         
-        // Crear lista con tiendas de ejemplo
+       
         modeloLista = new DefaultListModel<>();
-        modeloLista.addElement("Tienda El Éxito");
-        modeloLista.addElement("Carrefour Centro");
-        modeloLista.addElement("Jumbo Plaza");
-        modeloLista.addElement("D1 Barrio Norte");
-        modeloLista.addElement("Ara Local 45");
-        
         listaTiendas = new JList<>(modeloLista);
+        
+        cargarTiendas();
         JScrollPane scrollPane = new JScrollPane(listaTiendas);
         add(scrollPane, BorderLayout.CENTER);
         
         btnAgregar = new JButton("Agregar Tienda");
+        if (panelPrincipal != null) {
+            btnAgregar.addActionListener(e -> {
+                new DialogoAgregarTienda(panelPrincipal, this).setVisible(true);
+            });
+        } else {
+            btnAgregar.setEnabled(false);
+        }
         add(btnAgregar, BorderLayout.SOUTH);
     }
     
@@ -42,5 +54,30 @@ public class PanelListaTiendas extends JPanel {
     
     public DefaultListModel<String> getModeloLista() {
         return modeloLista;
+    }
+    
+    public void cargarTiendas() {
+        modeloLista.clear();
+        try {
+            TiendaDAO tiendaDAO = new TiendaDAO();
+            List<Tienda> tiendas = tiendaDAO.obtenerTiendas();
+            
+            for (Tienda tienda : tiendas) {
+                modeloLista.addElement(tienda.getNombre());
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar tiendas: " + e.getMessage());
+        }
+    }
+    
+    public void agregarTienda(Tienda tienda) {
+        modeloLista.addElement(tienda.getNombre());
+    }
+    
+    public void actualizarListaTiendas(List<Tienda> tiendas) {
+        modeloLista.clear();
+        for (Tienda tienda : tiendas) {
+            modeloLista.addElement(tienda.getNombre());
+        }
     }
 }
