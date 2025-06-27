@@ -43,8 +43,11 @@ El proyecto utiliza tres tablas principales:
 - Las imágenes seleccionadas para las tiendas deben estar en la carpeta `images/` o en una ruta accesible.
 - El archivo de base de datos `tiendas.db` se crea automáticamente si no existe.
 
-## Autor
-- [Tu Nombre]
+## Autoría y Créditos
+- Hernán David Cifuentes
+- Jhon Deivid Rojas Rodriguez
+
+Este proyecto fue realizado como trabajo de análisis y desarrollo de software para el SENA.
 
 ---
 
