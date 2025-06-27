@@ -1,23 +1,23 @@
 package Mundo;
 
 public class Categoria {
-  private long id;
+  private int id;
   private String nombre;
 
   public Categoria(String pnombre) {
     this.nombre = pnombre;
   }
 
-  public Categoria(long pid, String pnombre) {
+  public Categoria(int pid, String pnombre) {
     this.id = pid;
     this.nombre = pnombre;
   }
 
-  public long getId() {
+  public int getId() {
     return this.id;
   }
 
-  public void setId(long pid) {
+  public void setId(int pid) {
     this.id = pid;
   }
 

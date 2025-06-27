@@ -133,7 +133,7 @@ public class DialogoAgregarTienda extends JDialog {
     private void guardarTienda() {
         try {
             String categoriaSeleccionada = (String) cmbCategorias.getSelectedItem();
-            long idCategoria = Long.parseLong(categoriaSeleccionada.split("\\(ID: ")[1].replace(")", ""));
+            int idCategoria = Integer.parseInt(categoriaSeleccionada.split("\\(ID: ")[1].replace(")", ""));
             
             String nombreCategoria = categoriaSeleccionada.split("\\(")[0].trim();
             Tienda tienda = new Tienda(
@@ -145,7 +145,7 @@ public class DialogoAgregarTienda extends JDialog {
                 rutaImagenSeleccionada 
             );
             
-            long idTienda = tiendaDAO.insertarTienda(tienda);
+            int idTienda = tiendaDAO.insertarTienda(tienda);
             if (idTienda != -1) {
                 tiendaDAO.insertarCategoriaTienda(idTienda, idCategoria);
                 panelListaTiendas.cargarTiendas();

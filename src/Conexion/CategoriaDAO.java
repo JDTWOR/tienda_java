@@ -20,7 +20,7 @@ public class CategoriaDAO {
             
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    categoria.setId(generatedKeys.getLong(1));
+                    categoria.setId(generatedKeys.getInt(1));
                 }
             }
             System.out.println("Categoría insertada correctamente.");
@@ -37,7 +37,7 @@ public class CategoriaDAO {
             
             while (rs.next()) {
                 Categoria categoria = new Categoria(
-                    rs.getLong("id"),
+                    rs.getInt("id"),
                     rs.getString("nombre"));
                 lista.add(categoria);
             }
@@ -47,22 +47,20 @@ public class CategoriaDAO {
         return lista;
     }
 
-    public List<Categoria> obtenerCategoriasPorTienda(long idTienda) {
+    public List<Categoria> obtenerCategoriasPorTienda(int idTienda) {
         List<Categoria> lista = new ArrayList<>();
         String sql = "SELECT c.* FROM categorias c " +
-                    "JOIN tienda_categorias tc ON c.id = tc.id_categoria " +
-                    "WHERE tc.id_tienda = ?";
+                     "JOIN tienda_categorias tc ON c.id = tc.id_categoria " +
+                     "WHERE tc.id_tienda = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, idTienda);
+            stmt.setInt(1, idTienda);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Categoria categoria = new Categoria(
-                        rs.getLong("id"),
-                        rs.getString("nombre"));
+                    Categoria categoria = new Categoria(rs.getInt("id"), rs.getString("nombre"));
                     lista.add(categoria);
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("Error al obtener categorías por tienda: " + e.getMessage());
         }
         return lista;

@@ -12,7 +12,7 @@ public class TiendaDAO {
     conn = new Conexiondb().conectar();
   }
 
-  public long insertarTienda(Tienda tienda) {
+  public int insertarTienda(Tienda tienda) {
     String sql = "INSERT INTO tiendas(nombre, contacto, direccion, ruta_imagen) VALUES (?, ?, ?, ?)";
     try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       stmt.setString(1, tienda.getNombre());
@@ -23,7 +23,7 @@ public class TiendaDAO {
       
       try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
         if (generatedKeys.next()) {
-          long idTienda = generatedKeys.getLong(1);
+          int idTienda = generatedKeys.getInt(1);
           System.out.println("Tienda insertada correctamente con ID: " + idTienda);
           return idTienda;
         }
@@ -34,11 +34,11 @@ public class TiendaDAO {
     return -1;
   }
 
-  public void insertarCategoriaTienda(long idTienda, long idCategoria) {
+  public void insertarCategoriaTienda(int idTienda, int idCategoria) {
     String sql = "INSERT INTO tienda_categorias(id_tienda, id_categoria) VALUES (?, ?)";
     try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-      stmt.setLong(1, idTienda);
-      stmt.setLong(2, idCategoria);
+      stmt.setInt(1, idTienda);
+      stmt.setInt(2, idCategoria);
       stmt.executeUpdate();
       System.out.println("Relación tienda-categoría insertada correctamente.");
     } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class TiendaDAO {
 
       while (rs.next()) {
         Tienda tienda = new Tienda(
-            rs.getLong("id"), 
+            rs.getInt("id"), 
             rs.getString("nombre"),
             "Sin categoría",
             rs.getString("contacto"),
@@ -85,7 +85,7 @@ public class TiendaDAO {
         if (rs.next()) {
           String nombreCategoria = rs.getString("nombre_categoria");
           return new Tienda(
-              rs.getLong("id"), 
+              rs.getInt("id"), 
               rs.getString("nombre"),
               nombreCategoria != null ? nombreCategoria : "Sin categoría",
               rs.getString("contacto"),
@@ -118,13 +118,13 @@ public class TiendaDAO {
       stmtSelect.setString(1, nombre);
       try (ResultSet rs = stmtSelect.executeQuery()) {
         if (rs.next()) {
-          long idTienda = rs.getLong("id");
+          int idTienda = rs.getInt("id");
           try (PreparedStatement stmtRel = conn.prepareStatement(sqlDeleteRelaciones)) {
-            stmtRel.setLong(1, idTienda);
+            stmtRel.setInt(1, idTienda);
             stmtRel.executeUpdate();
           }
           try (PreparedStatement stmtTienda = conn.prepareStatement(sqlDeleteTienda)) {
-            stmtTienda.setLong(1, idTienda);
+            stmtTienda.setInt(1, idTienda);
             int filas = stmtTienda.executeUpdate();
             return filas > 0;
           }
@@ -136,7 +136,7 @@ public class TiendaDAO {
     return false;
   }
 
-  public boolean actualizarTiendaPorNombre(String nombreAntiguo, String nuevoNombre, String nuevaCategoria, String nuevoContacto, String nuevaDireccion, long idNuevaCategoria) {
+  public boolean actualizarTiendaPorNombre(String nombreAntiguo, String nuevoNombre, String nuevaCategoria, String nuevoContacto, String nuevaDireccion, int idNuevaCategoria) {
     String sqlSelect = "SELECT id FROM tiendas WHERE nombre = ?";
     String sqlUpdate = "UPDATE tiendas SET nombre = ?, contacto = ?, direccion = ? WHERE nombre = ?";
     String sqlDeleteRel = "DELETE FROM tienda_categorias WHERE id_tienda = ?";
@@ -145,7 +145,7 @@ public class TiendaDAO {
       stmtSelect.setString(1, nombreAntiguo);
       try (ResultSet rs = stmtSelect.executeQuery()) {
         if (rs.next()) {
-          long idTienda = rs.getLong("id");
+          int idTienda = rs.getInt("id");
           // Actualizar datos principales
           try (PreparedStatement stmt = conn.prepareStatement(sqlUpdate)) {
             stmt.setString(1, nuevoNombre);
@@ -156,13 +156,13 @@ public class TiendaDAO {
           }
           // Eliminar relación anterior
           try (PreparedStatement stmtDel = conn.prepareStatement(sqlDeleteRel)) {
-            stmtDel.setLong(1, idTienda);
+            stmtDel.setInt(1, idTienda);
             stmtDel.executeUpdate();
           }
           // Insertar nueva relación
           try (PreparedStatement stmtIns = conn.prepareStatement(sqlInsertRel)) {
-            stmtIns.setLong(1, idTienda);
-            stmtIns.setLong(2, idNuevaCategoria);
+            stmtIns.setInt(1, idTienda);
+            stmtIns.setInt(2, idNuevaCategoria);
             stmtIns.executeUpdate();
           }
           return true;

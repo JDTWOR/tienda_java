@@ -1,7 +1,7 @@
 package Mundo;
 
 public class Tienda {
-  private long id;
+  private int id;
   private String nombre;
   private String categoria;
   private String contacto;
@@ -16,7 +16,7 @@ public class Tienda {
     this.rutaImagen = prutaImagen;
   }
 
-  public Tienda(long pid, String pnombre, String pcategoria, String pcontacto, String pdireccion, String prutaImagen) {
+  public Tienda(int pid, String pnombre, String pcategoria, String pcontacto, String pdireccion, String prutaImagen) {
     this.id = pid;
     this.nombre = pnombre;
     this.categoria = pcategoria;
@@ -25,11 +25,11 @@ public class Tienda {
     this.rutaImagen = prutaImagen;
   }
 
-  public void setId(long pid) {
+  public void setId(int pid) {
     this.id = pid;
   }
 
-  public long getId() {
+  public int getId() {
     return this.id;
   }
 

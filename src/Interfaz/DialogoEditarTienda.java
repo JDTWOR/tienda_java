@@ -83,7 +83,7 @@ public class DialogoEditarTienda extends JDialog {
         int idx = cmbCategorias.getSelectedIndex();
         Categoria cat = listaCategorias.get(idx);
         String nombreCategoria = cat.getNombre();
-        long idCategoria = cat.getId();
+        int idCategoria = cat.getId();
         TiendaDAO dao = new TiendaDAO();
         boolean exito = dao.actualizarTiendaPorNombre(nombreOriginal, nuevoNombre, nombreCategoria, nuevoTelefono, nuevaDireccion, idCategoria);
         if (exito) {
